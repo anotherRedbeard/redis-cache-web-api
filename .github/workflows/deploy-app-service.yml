@@ -41,13 +41,6 @@ jobs:
              --template-file ./iac/main-deploy-app-service.bicep \
              --parameters app_service_postfix=${{ env.app-service-postfix }} app_service_plan_postfix=${{ env.app-service-plan-postfix }} app_service_sku=B1
 
-      - name: Get App Service Name
-        uses: azure/CLI@v1
-        with:
-          inlineScript: |
-            APP_NAME=$(az deployment group show -g ${{ env.resource-group-name }} -n ${{ env.main-app-service-deployment-name }} --query properties.outputs.appServiceName.value  --output tsv)
-            echo APP_NAME=$APP_NAME >> $GITHUB_ENV
-      
       - name: Azure CLI script
         uses: azure/CLI@v1
         with:
@@ -100,6 +93,13 @@ jobs:
         with:
           name: .net-app
 
+      - name: Get App Service Name
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            APP_NAME=$(az deployment group show -g ${{ env.resource-group-name }} -n ${{ env.main-app-service-deployment-name }} --query properties.outputs.appServiceName.value  --output tsv)
+            echo APP_NAME=$APP_NAME >> $GITHUB_ENV
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
@@ -119,7 +119,7 @@ jobs:
                 "slotSetting": false
               }
             ]
-            
+
       - name: Azure CLI script
         uses: azure/CLI@v1
         with:
