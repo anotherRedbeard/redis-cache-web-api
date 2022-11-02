@@ -39,7 +39,7 @@ jobs:
             az group create -l ${{ env.location }} -n ${{ env.resource-group-name}}
             az deployment group create --resource-group ${{ env.resource-group-name }} \
              --template-file ./iac/main-deploy-app-service.bicep \
-             --parameters app_service_postfix=${{ env.app-service-postfix }} app_service_sku=B1
+             --parameters app_service_postfix=${{ env.app-service-postfix }} app_service_plan_postfix=${{ env.app-service-plan-postfix }} app_service_sku=B1
 
       - name: Get App Service Name
         uses: azure/CLI@v1
