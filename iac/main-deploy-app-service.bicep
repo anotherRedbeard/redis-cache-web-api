@@ -8,6 +8,11 @@ param location string = resourceGroup().location
 @description('The name of the app service to create.')
 param app_service_postfix string 
 
+@maxLength(10)
+@minLength(2)
+@description('The name of the app service plan to create.')
+param app_service_plan_postfix string 
+
 @allowed([
   'B1'
 ])
@@ -20,7 +25,7 @@ param app_service_sku string
 module logws './log-analytics-ws.bicep' = {
   name: 'LogWorkspaceDeployment'
   params: {
-    name: app_service_postfix
+    name: app_service_plan_postfix
     location: location
   }
 }
@@ -30,6 +35,7 @@ module appService './app-service.bicep' = {
   name: 'AppServiceDeployment'
   params: {
     webAppName: app_service_postfix
+    appServName: app_service_plan_postfix
     sku: app_service_sku
     linuxFxVersion: 'node|14-lts'
     location: location
