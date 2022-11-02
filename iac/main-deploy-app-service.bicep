@@ -18,10 +18,11 @@ param app_service_plan_postfix string
 @description('The version of the stack you are running.')
 param stack_version string 
 
-@maxLength(20)
+@maxLength(200)
 @minLength(2)
 @description('The startup command you want to use in the stack settings.')
 param startup_command string 
+
 @allowed([
   'B1'
 ])
