@@ -4,6 +4,7 @@ param sku string = 'F1' // The SKU of App Service Plan
 param linuxFxVersion string = 'DOTNETCORE|6.0' // The runtime stack of web app
 param location string = resourceGroup().location // Location for all resources
 param logwsid string
+param startupCommand string = 'dotnet myapp.dll' // The runtime startup command
 var appServicePlanName = toLower('red-AppServicePlan-${appServName}')
 var appInsightsName = toLower('red-AppInsights-${webAppName}')
 var webSiteName = toLower('red-webApp-${webAppName}')
@@ -43,6 +44,7 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
     serverFarmId: appServicePlan.id
     siteConfig: {
       linuxFxVersion: linuxFxVersion
+      appCommandLine: startupCommand
     }
   }
 }

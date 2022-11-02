@@ -39,7 +39,11 @@ jobs:
             az group create -l ${{ env.location }} -n ${{ env.resource-group-name}}
             az deployment group create --resource-group ${{ env.resource-group-name }} \
              --template-file ./iac/main-deploy-app-service.bicep \
-             --parameters app_service_postfix=${{ env.app-service-postfix }} app_service_plan_postfix=${{ env.app-service-plan-postfix }} app_service_sku=B1
+             --parameters app_service_postfix=${{ env.app-service-postfix }} \
+              app_service_plan_postfix=${{ env.app-service-plan-postfix }} \
+              app_service_sku=B1 \
+              stack_version=DOTNETCORE|6.0
+              startup_command='dotnet redis-cache-web-api.dll'
 
       - name: Azure CLI script
         uses: azure/CLI@v1
@@ -76,7 +80,7 @@ jobs:
           path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     needs: build
     environment:
       name: 'Production'

@@ -13,6 +13,15 @@ param app_service_postfix string
 @description('The name of the app service plan to create.')
 param app_service_plan_postfix string 
 
+@maxLength(10)
+@minLength(2)
+@description('The version of the stack you are running.')
+param stack_version string 
+
+@maxLength(20)
+@minLength(2)
+@description('The startup command you want to use in the stack settings.')
+param startup_command string 
 @allowed([
   'B1'
 ])
@@ -37,7 +46,8 @@ module appService './app-service.bicep' = {
     webAppName: app_service_postfix
     appServName: app_service_plan_postfix
     sku: app_service_sku
-    linuxFxVersion: 'node|14-lts'
+    linuxFxVersion: stack_version
+    startupCommand: startup_command
     location: location
     logwsid: logws.outputs.id
   }
