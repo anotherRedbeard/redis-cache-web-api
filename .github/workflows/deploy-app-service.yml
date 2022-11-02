@@ -17,6 +17,7 @@ env:
   location: 'southcentralus'
   app-service-postfix: 'redis-api'
   resource-group-name: 'red-scus-appsrvdemo-rg'
+  main-app-service-deployment-name: 'main-deploy-app-service'
 
 jobs:
   build-infra:
