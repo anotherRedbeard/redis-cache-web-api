@@ -13,7 +13,7 @@ param app_service_postfix string
 @description('The name of the app service plan to create.')
 param app_service_plan_postfix string 
 
-@maxLength(10)
+@maxLength(40)
 @minLength(2)
 @description('The version of the stack you are running.')
 param stack_version string 
