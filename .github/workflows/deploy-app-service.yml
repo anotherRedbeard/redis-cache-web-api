@@ -42,7 +42,7 @@ jobs:
              --parameters app_service_postfix=${{ env.app-service-postfix }} \
               app_service_plan_postfix=${{ env.app-service-plan-postfix }} \
               app_service_sku=B1 \
-              stack_version=DOTNETCORE|6.0
+              stack_version=DOTNETCORE|6.0 \
               startup_command='dotnet redis-cache-web-api.dll'
 
       - name: Azure CLI script
