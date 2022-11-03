@@ -13,11 +13,6 @@ param app_service_postfix string
 @description('The name of the app service plan to create.')
 param app_service_plan_postfix string 
 
-@maxLength(10)
-@minLength(2)
-@description('The name of the redis cache.')
-param redis_cache_name string 
-
 @maxLength(40)
 @minLength(2)
 @description('The version of the stack you are running.')
@@ -35,7 +30,7 @@ param startup_command string
 param app_service_sku string
 
 @description('Specify the name of the Azure Redis Cache to create.')
-param redisCacheName string = 'redisCache-${uniqueString(resourceGroup().id)}'
+param redis_cache_name string = 'redisCache-${uniqueString(resourceGroup().id)}'
 @description('Specify a boolean value that indicates whether to allow access via non-SSL ports.')
 param enableNonSslPort bool = false
 @description('Specify the pricing tier of the new Azure Redis Cache.')
@@ -87,7 +82,7 @@ module appService './app-service.bicep' = {
     startupCommand: startup_command
     location: location
     logwsid: logws.outputs.id
-    redisCacheName: redisCacheName
+    redisCacheName: redis_cache_name
     redisCacheCapacity: redisCacheCapacity
     redisCacheFamily: redisCacheFamily
     redisCacheSKU: redisCacheSKU
