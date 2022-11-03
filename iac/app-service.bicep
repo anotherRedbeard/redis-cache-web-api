@@ -48,6 +48,7 @@ resource appi 'Microsoft.Insights/components@2020-02-02' = {
   properties: {
     enableNonSslPort: enableNonSslPort
     minimumTlsVersion: '1.2'
+    redisVersion: '6.0'
     sku: {
       capacity: redisCacheCapacity
       family: redisCacheFamily
