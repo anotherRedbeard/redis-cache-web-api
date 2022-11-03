@@ -76,16 +76,6 @@ module logws './log-analytics-ws.bicep' = {
   }
 }
 
-// Create Redis cache
-module redis './redis-cache.bicep' = {
-  name: 'RedisCacheDeployment'
-  params: {
-    redisCacheName: redis_cache_name
-    location: location
-
-  }
-}
-
 // Create app service
 module appService './app-service.bicep' = {
   name: 'AppServiceDeployment'
