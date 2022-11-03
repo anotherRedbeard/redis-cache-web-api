@@ -45,7 +45,7 @@ jobs:
               app_service_sku=B1 \
               stack_version='DOTNETCORE|6.0' \
               startup_command='dotnet redis-cache-web-api.dll' \
-              redisCacheName= ${{ env.redis-cache-name }}
+              redis_cache_name= ${{ env.redis-cache-name }}
 
       - name: Azure CLI script
         uses: azure/CLI@v1
