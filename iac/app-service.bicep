@@ -5,6 +5,11 @@ param linuxFxVersion string = 'DOTNETCORE|6.0' // The runtime stack of web app
 param location string = resourceGroup().location // Location for all resources
 param logwsid string
 param startupCommand string = 'dotnet myapp.dll' // The runtime startup command
+param redisCacheName string = 'redisCache-${uniqueString(resourceGroup().id)}'
+param enableNonSslPort bool = false
+param redisCacheSKU string = 'Standard'
+param redisCacheFamily string = 'C'
+param redisCacheCapacity int = 1
 var appServicePlanName = toLower('red-AppServicePlan-${appServName}')
 var appInsightsName = toLower('red-AppInsights-${webAppName}')
 var webSiteName = toLower('red-webApp-${webAppName}')
@@ -37,6 +42,20 @@ resource appi 'Microsoft.Insights/components@2020-02-02' = {
   }
  }
 
+ resource redisCache 'Microsoft.Cache/Redis@2020-06-01' = {
+  name: redisCacheName
+  location: location
+  properties: {
+    enableNonSslPort: enableNonSslPort
+    minimumTlsVersion: '1.2'
+    sku: {
+      capacity: redisCacheCapacity
+      family: redisCacheFamily
+      name: redisCacheSKU
+    }
+  }
+}
+
 resource appService 'Microsoft.Web/sites@2020-06-01' = {
   name: webSiteName
   location: location
@@ -45,6 +64,16 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
     siteConfig: {
       linuxFxVersion: linuxFxVersion
       appCommandLine: startupCommand
+      appSettings: [
+        {
+          name: 'CacheConnection'
+          value: '${redisCacheName}.redis.cache.windows.net,abortConnect=false,ssl=true,password=${redisCache.listKeys().primaryKey}'
+        }
+        {
+          name: 'WEBSITE_ENABLE_SYNC_UPDATE_SITE'
+          value: 'true'
+        }
+      ]
     }
   }
 }

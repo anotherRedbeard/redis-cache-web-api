@@ -18,6 +18,7 @@ env:
   app-service-postfix: 'redis-api'
   resource-group-name: 'red-scus-appsrvdemo-rg'
   main-app-service-deployment-name: 'main-deploy-app-service'
+  redis-cache-name: 'red-appsrvcache-redis'
 
 jobs:
   build-infra:
@@ -43,7 +44,8 @@ jobs:
               app_service_plan_postfix=${{ env.app-service-plan-postfix }} \
               app_service_sku=B1 \
               stack_version='DOTNETCORE|6.0' \
-              startup_command='dotnet redis-cache-web-api.dll'
+              startup_command='dotnet redis-cache-web-api.dll' \
+              redisCacheName= ${{ end.redis-cache-name }}
 
       - name: Azure CLI script
         uses: azure/CLI@v1
