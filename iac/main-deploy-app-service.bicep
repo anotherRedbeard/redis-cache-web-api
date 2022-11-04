@@ -60,6 +60,9 @@ param redisCacheFamily string = 'C'
 ])
 param redisCacheCapacity int = 1
 
+@description('Specifies the name of the key vault.')
+param key_vault_name string
+
 // =================================
 
 // Create Log Analytics workspace
@@ -71,8 +74,10 @@ module logws './log-analytics-ws.bicep' = {
   }
 }
 
+
+
 // Create app service
-module appService './app-service.bicep' = {
+module appService './app-service-with-redis.bicep' = {
   name: 'AppServiceDeployment'
   params: {
     webAppName: app_service_postfix
@@ -87,6 +92,7 @@ module appService './app-service.bicep' = {
     redisCacheFamily: redisCacheFamily
     redisCacheSKU: redisCacheSKU
     enableNonSslPort: enableNonSslPort
+    keyValueName: key_vault_name
   }
 }
 

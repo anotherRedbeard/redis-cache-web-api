@@ -13,6 +13,10 @@ param redisCacheCapacity int = 1
 var appServicePlanName = toLower('red-AppServicePlan-${appServName}')
 var appInsightsName = toLower('red-AppInsights-${webAppName}')
 var webSiteName = toLower('red-webApp-${webAppName}')
+param keyValueName string
+// variables
+var redisKeySecretName = toLower('${redisCacheName}-access-key')
+var managedIdentityName = toLower('${redisCacheName}-managed-id')
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
   name: appServicePlanName
@@ -68,7 +72,7 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
       appSettings: [
         {
           name: 'CacheConnection'
-          value: '${redisCacheName}.redis.cache.windows.net,abortConnect=false,ssl=true,password=${redisCache.listKeys().primaryKey}'
+          value: kv.outputs.secretUri
         }
         {
           name: 'WEBSITE_ENABLE_SYNC_UPDATE_SITE'
@@ -76,6 +80,30 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
         }
       ]
     }
+  }
+  identity: {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${msi.id}': {}
+    }
+  }
+}
+
+// Managed Identity resources
+resource msi 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+  name: managedIdentityName
+  location: location
+}
+
+// Create KeyVault
+module kv 'key-vault.bicep' = {
+  name: 'KeyVaultDeployment'
+  params: {
+    keyVaultName: keyValueName
+    location: location
+    objectId: msi.id
+    secretName: redisKeySecretName
+    secretValue: '${redisCacheName}.redis.cache.windows.net,abortConnect=false,ssl=true,password=${redisCache.listKeys().primaryKey}'
   }
 }
 
