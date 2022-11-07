@@ -27,6 +27,8 @@ public class EmployeeController : ControllerBase
     [HttpGet("{id}",Name = "GetEmployee")]
     public async Task<ActionResult<Employee>> GetEmployee(string id)
     {
+        _logger.LogDebug($"This is the connection **{_configuration.GetValue<string>("CacheConnection")}**");
+        Console.WriteLine($"This is the connection **{_configuration.GetValue<string>("CacheConnection")}**");
         RedisValue getMessageResult = await _redisConnection.BasicRetryAsync(async (db) => await db.StringGetAsync($"e{id}"));
         Employee fromCache = JsonSerializer.Deserialize<Employee>(getMessageResult.ToString());
         Employee em = new Employee(fromCache?.Id, fromCache?.Name, fromCache?.Age ?? default(int));
