@@ -101,7 +101,7 @@ module kv 'key-vault.bicep' = {
   params: {
     keyVaultName: keyValueName
     location: location
-    objectId: msi.id
+    objectId: msi.properties.principalId
     secretName: redisKeySecretName
     secretValue: '${redisCacheName}.redis.cache.windows.net,abortConnect=false,ssl=true,password=${redisCache.listKeys().primaryKey}'
   }
