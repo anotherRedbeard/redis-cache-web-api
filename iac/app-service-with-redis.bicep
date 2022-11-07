@@ -46,7 +46,7 @@ resource appi 'Microsoft.Insights/components@2020-02-02' = {
   }
  }
 
- resource redisCache 'Microsoft.Cache/Redis@2020-06-01' = {
+ resource redisCache 'Microsoft.Cache/Redis@2020-12-01' = {
   name: redisCacheName
   location: location
   properties: {
@@ -61,7 +61,7 @@ resource appi 'Microsoft.Insights/components@2020-02-02' = {
   }
 }
 
-resource appService 'Microsoft.Web/sites@2020-06-01' = {
+resource appService 'Microsoft.Web/sites@2020-12-01' = {
   name: webSiteName
   location: location
   properties: {
@@ -80,6 +80,7 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
         }
       ]
     }
+    keyVaultReferenceIdentity: msi.id
   }
   identity: {
     type: 'UserAssigned'
