@@ -19,10 +19,10 @@ public class EmployeeController : ControllerBase
 
     public EmployeeController(ILogger<WeatherForecastController> logger, IConfiguration configuration)
     {
-        Console.WriteLine($"This is the connection **{_configuration.GetValue<string>("CacheConnection")}**");
         _logger = logger;
         _configuration = configuration;
         _redisConnection = RedisConnection.InitializeAsync(_configuration.GetValue<string>("CacheConnection")).Result;
+        Console.WriteLine($"This is the connection **{_configuration.GetValue<string>("CacheConnection")}**");
     }
 
     [HttpGet("{id}",Name = "GetEmployee")]
