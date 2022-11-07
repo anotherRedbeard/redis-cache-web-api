@@ -72,7 +72,7 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
       appSettings: [
         {
           name: 'CacheConnection'
-          value: kv.outputs.secretUri
+          value: '@Microsoft.KeyVault(SecretUri=${kv.outputs.secretUri})'
         }
         {
           name: 'WEBSITE_ENABLE_SYNC_UPDATE_SITE'

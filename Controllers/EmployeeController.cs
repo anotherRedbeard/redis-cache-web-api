@@ -21,7 +21,7 @@ public class EmployeeController : ControllerBase
     {
         _logger = logger;
         _configuration = configuration;
-        Console.WriteLine($"This is the connection **{_configuration.GetValue<string>("CacheConnection")}**");
+        //Console.WriteLine($"This is the connection **{_configuration.GetValue<string>("CacheConnection")}**");
         _redisConnection = RedisConnection.InitializeAsync(_configuration.GetValue<string>("CacheConnection")).Result;
     }
 
