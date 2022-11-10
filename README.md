@@ -50,6 +50,15 @@ This is a list of all the bicep templates used in the *build-infra* section of t
     - Managed identity (service principal) that is used to be the identity of the app service.  This is used to provide RBAC to the key vault from the app service using the `Key Vault Secrets User` role.
   - Azure Cache for Redis
     - Redis implementation, this is the data store we are using for this demo
+
+>If you would like to use the Redis console to add a cached value to test from the api here is how you can do that.
+
+      - Open up the Azure Cache For Redis instance in the Azure Portal
+      - Go to the Overview blade and click the Console button at the top of the Overview page
+      - Run the following command in the console to add a key of e008
+
+`>set e008 "{\"Id\":\"008\",\"Name\":\"Tom Bobadil\",\"Age\":6123}"`
+
 - **iac/key-vault.bicep**
   - Key Vault
     - Holds the secrets that will be used by the app service, check bicep file to see how these are linked together.  Since we are using a user-defined managed identity we had to set the `keyVaultReferenceIdentity` property on the app service.  See this [document](https://learn.microsoft.com/en-us/azure/app-service/app-service-key-vault-references?tabs=azure-cli#access-vaults-with-a-user-assigned-identity) for more info.
